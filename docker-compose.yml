@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  new-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: new-api
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - TZ=Asia/Shanghai
+      - LOG_DIR=/app/logs
+    volumes:
+      # 源代码映射 (用于开发调试)
+      - ./:/app/source
+      # 数据目录映射
+      - ./data:/data
+      - ./data/logs:/app/logs
+      - ./data/database:/app/database
+      - ./data/uploads:/app/uploads
+      - ./data/config:/app/config
+      # 代码目录映射 (用于热更新)
+      - ./web:/app/web
+      - ./bin:/app/bin
+      - ./model:/app/model
+      - ./controller:/app/controller
+      - ./middleware:/app/middleware
+      - ./router:/app/router
+      - ./service:/app/service
+      - ./common:/app/common
+    working_dir: /data
+    networks:
+      - new-api-network
+
+networks:
+  new-api-network:
+    driver: bridge
+
+# 使用说明:
+# 1. 构建并启动: docker-compose up -d --build
+# 2. 查看日志: docker-compose logs -f
+# 3. 停止: docker-compose down
+# 4. 重新构建: docker-compose up -d --build --force-recreate
