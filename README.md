@@ -3,7 +3,7 @@
 </p>
 <div align="center">
 
-![mixapi](/web/public/logo.png)
+
 
 # MIXAPI
 
