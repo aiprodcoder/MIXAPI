@@ -29,7 +29,7 @@ docker镜像，一键部署，开箱即用，完全开源，自主可控！本�
 > - 本项目仅供个人学习使用，不保证稳定性，且不提供任何技术支持。
 > - 根据[《生成式人工智能服务管理暂行办法》](http://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm)的要求，请勿对中国地区公众提供一切未经备案的生成式人工智能服务。
 
-
+ <img src="https://github.com/aiprodcoder/MIXAPI/blob/main/img/mixapi-info.jpg" alt="mixapi">
 
 ## ✨ 主要特性
 
