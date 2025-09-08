@@ -7,32 +7,22 @@
 
 # MIXAPI
 
-🍥新一代大模型网关与AI资产管理系统
+🍥新一代大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
 
  
 <p align="center">
   <a href="https://raw.githubusercontent.com/Calcium-Ion/new-api/main/LICENSE">
     <img src="https://img.shields.io/github/license/Calcium-Ion/new-api?color=brightgreen" alt="license">
   </a>
-  <a href="https://github.com/Calcium-Ion/new-api/releases/latest">
-    <img src="https://img.shields.io/github/v/release/Calcium-Ion/new-api?color=brightgreen&include_prereleases" alt="release">
-  </a>
-  <a href="https://github.com/users/Calcium-Ion/packages/container/package/new-api">
-    <img src="https://img.shields.io/badge/docker-ghcr.io-blue" alt="docker">
-  </a>
-  <a href="https://hub.docker.com/r/CalciumIon/new-api">
-    <img src="https://img.shields.io/badge/docker-dockerHub-blue" alt="docker">
-  </a>
-  <a href="https://goreportcard.com/report/github.com/Calcium-Ion/new-api">
-    <img src="https://goreportcard.com/badge/github.com/Calcium-Ion/new-api" alt="GoReportCard">
-  </a>
+ 
 </p>
 </div>
 
 ## 📝 项目说明
 
-> [!NOTE]  
-> 本项目为开源项目，由[New API](https://github.com/Calcium-Ion/new-api)二次开发而来
+全新AI大模型接口管理与API聚合分发系统，支持将多种大模型转换成统一的OpenAI兼容接口,Claude接口,Gemini接口，可供个人或者企业内部大模型API
+统一管理和渠道分发使用(key管理与二次分发)，支持国际国内所有主流大模型，gemini,claude,qwen3,kimi-k2,豆包等，提供单可执行文件，
+docker镜像，一键部署，开箱即用，完全开源，自主可控！本项目基于New-API和One-API，整合了NewAPI,OneAPI所有功能及众多第三方插件为一身，功能超强！
 
 > [!IMPORTANT]  
 > - 本项目仅供个人学习使用，不保证稳定性，且不提供任何技术支持。
