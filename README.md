@@ -24,14 +24,14 @@
 统一管理和渠道分发使用(key管理与二次分发)，支持国际国内所有主流大模型，gemini,claude,qwen3,kimi-k2,豆包等，提供单可执行文件，
 docker镜像，一键部署，开箱即用，完全开源，自主可控！<br>
  * 本项目基于New-API和One-API，整合了NewAPI,OneAPI所有功能及众多第三方插件为一身，名副其实的全能战士！  
- * 超高高性能优化，用魔法打败魔法，对主要转发通路的代码用AI大模型进行多轮特别优化，写出了人类想象不出的高效代码，提高大流量高并发场景性能50%以上！  
+ * 超高性能优化，用魔法打败魔法，对主要转发通路的代码用AI大模型进行多轮特别优化，写出了人类想象不出的高效代码，提高大流量高并发场景性能50%以上！  
 
 > [!IMPORTANT]  
 > - 本项目仅供个人学习使用，不保证稳定性。
 > - 根据[《生成式人工智能服务管理暂行办法》](http://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm)的要求，请勿对中国地区公众提供一切未经备案的生成式人工智能服务。
 
 
- <div align="center"> <img src="/img/mixapi-info.jpg" width = "960" height = "560" alt="mixapi" /> </div>
+ <div align="center"> <img src="/img/mixapi-info.jpg" width = "960" height = "520" alt="mixapi" /> </div>
 
 ## ✨ 主要特性
 
