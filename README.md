@@ -56,14 +56,21 @@ MIXAPI提供了丰富的功能：
 * 📊 新增用量日统计
   <div align="center"> <img src="/img/git2.png" width = "960" height = "460" alt="mixapi" /> </div>
 
+
 * 📊 新增用量月统计
  <div align="center"> <img src="/img/git3.png" width = "960" height = "460" alt="mixapi" /> </div>
+
+
 
 * 📋 新增令牌管理显示该令牌的今日次数和总次数
  <div align="center"> <img src="/img/git4.png" width = "960" height = "460" alt="mixapi" /> </div>
 
+
+
 * 📝 新增通过令牌请求的内容记录显示
  <div align="center"> <img src="/img/git5.png" width = "960" height = "460" alt="mixapi" /> </div>
+
+
 
 * 📝 支持通过令牌直接查询余额，无需登录 
  <div align="center"> <img src="/img/git6.png" width = "960" height = "460" alt="mixapi" /> </div>
