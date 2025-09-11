@@ -82,6 +82,29 @@ func GetTokenStatus(c *gin.Context) {
 	})
 }
 
+func GetTokenTags(c *gin.Context) {
+	tags, err := model.GetPaginatedTags(0, 1000) // 获取所有标签
+	if err != nil {
+		common.ApiError(c, err)
+		return
+	}
+
+	// 过滤掉空标签
+	filteredTags := make([]string, 0)
+	for _, tag := range tags {
+		if tag != nil && *tag != "" {
+			filteredTags = append(filteredTags, *tag)
+		}
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"message": "",
+		"data":    filteredTags,
+	})
+	return
+}
+
 func AddToken(c *gin.Context) {
 	token := model.Token{}
 	err := c.ShouldBindJSON(&token)
@@ -121,6 +144,8 @@ func AddToken(c *gin.Context) {
 		RateLimitPerMinute: token.RateLimitPerMinute,
 		RateLimitPerDay:    token.RateLimitPerDay,
 		LastRateLimitReset: 0,
+		ChannelTag:         token.ChannelTag,
+		TotalUsageLimit:    token.TotalUsageLimit,
 	}
 	err = cleanToken.Insert()
 	if err != nil {
@@ -200,6 +225,8 @@ func UpdateToken(c *gin.Context) {
 		cleanToken.Group = token.Group
 		cleanToken.RateLimitPerMinute = token.RateLimitPerMinute
 		cleanToken.RateLimitPerDay = token.RateLimitPerDay
+		cleanToken.ChannelTag = token.ChannelTag
+		cleanToken.TotalUsageLimit = token.TotalUsageLimit
 	}
 	err = cleanToken.Update()
 	if err != nil {

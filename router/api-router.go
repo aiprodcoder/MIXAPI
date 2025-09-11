@@ -126,6 +126,7 @@ func SetApiRouter(router *gin.Engine) {
 		{
 			tokenRoute.GET("/", controller.GetAllTokens)
 			tokenRoute.GET("/search", controller.SearchTokens)
+			tokenRoute.GET("/tags", controller.GetTokenTags)
 			tokenRoute.GET("/:id", controller.GetToken)
 			tokenRoute.POST("/", controller.AddToken)
 			tokenRoute.PUT("/", controller.UpdateToken)
@@ -185,13 +186,21 @@ func SetApiRouter(router *gin.Engine) {
 			usageStatsRoute.GET("/summary", middleware.AdminAuth(), controller.GetUsageStatisticsSummary)
 			usageStatsRoute.GET("/self", middleware.UserAuth(), controller.GetUserUsageStatistics)
 		}
-		
+
 		// 月度用量统计路由
 		monthlyUsageStatsRoute := apiRouter.Group("/usage_statistics_monthly")
 		{
 			monthlyUsageStatsRoute.GET("/", middleware.AdminAuth(), controller.GetMonthlyUsageStatistics)
 			monthlyUsageStatsRoute.GET("/summary", middleware.AdminAuth(), controller.GetMonthlyUsageStatisticsSummary)
 			monthlyUsageStatsRoute.GET("/self", middleware.UserAuth(), controller.GetUserMonthlyUsageStatistics)
+		}
+
+		// 统计图表路由
+		statisticsRoute := apiRouter.Group("/statistics")
+		{
+			statisticsRoute.GET("/channel", middleware.AdminAuth(), controller.GetChannelStatistics)
+			statisticsRoute.GET("/token", middleware.AdminAuth(), controller.GetTokenStatistics)
+			statisticsRoute.GET("/user", middleware.AdminAuth(), controller.GetUserStatistics)
 		}
 	}
 }

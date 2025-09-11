@@ -102,7 +102,8 @@ func getChannelQuery(group string, model string, retry int) (*gorm.DB, error) {
 	return channelQuery, nil
 }
 
-func GetRandomSatisfiedChannel(group string, model string, retry int) (*Channel, error) {
+// 修改GetRandomSatisfiedChannel函数，添加渠道标签过滤参数
+func GetRandomSatisfiedChannel(group string, model string, retry int, channelTag *string) (*Channel, error) {
 	var abilities []Ability
 
 	var err error = nil
@@ -110,6 +111,12 @@ func GetRandomSatisfiedChannel(group string, model string, retry int) (*Channel,
 	if err != nil {
 		return nil, err
 	}
+
+	// 如果提供了渠道标签，则添加标签过滤条件
+	if channelTag != nil && *channelTag != "" {
+		channelQuery = channelQuery.Where("tag = ? OR tag IS NULL", *channelTag)
+	}
+
 	if common.UsingSQLite || common.UsingPostgreSQL {
 		err = channelQuery.Order("weight DESC").Find(&abilities).Error
 	} else {
@@ -118,21 +125,50 @@ func GetRandomSatisfiedChannel(group string, model string, retry int) (*Channel,
 	if err != nil {
 		return nil, err
 	}
-	channel := Channel{}
-	if len(abilities) > 0 {
-		// Randomly choose one
-		weightSum := uint(0)
-		for _, ability_ := range abilities {
-			weightSum += ability_.Weight + 10
+
+	// 过滤符合标签要求的渠道
+	var filteredAbilities []Ability
+	for _, ability := range abilities {
+		// 如果提供了渠道标签，只考虑匹配标签的渠道
+		if channelTag != nil && *channelTag != "" {
+			// 如果渠道标签不匹配，则跳过
+			if ability.Tag != nil && *ability.Tag != "" && *ability.Tag != *channelTag {
+				continue
+			}
 		}
-		// Randomly choose one
-		weight := common.GetRandomInt(int(weightSum))
-		for _, ability_ := range abilities {
-			weight -= int(ability_.Weight) + 10
-			//log.Printf("weight: %d, ability weight: %d", weight, *ability_.Weight)
-			if weight <= 0 {
-				channel.Id = ability_.ChannelId
-				break
+		filteredAbilities = append(filteredAbilities, ability)
+	}
+
+	// 如果没有符合条件的渠道，返回错误
+	if len(filteredAbilities) == 0 {
+		if channelTag != nil && *channelTag != "" {
+			return nil, fmt.Errorf("没有找到标签为 '%s' 的可用渠道", *channelTag)
+		}
+		return nil, errors.New("channel not found")
+	}
+
+	channel := Channel{}
+	if len(filteredAbilities) > 0 {
+		// Randomly choose one based on weight
+		weightSum := uint(0)
+		for _, ability := range filteredAbilities {
+			weightSum += ability.Weight + 10 // 平滑系数
+		}
+
+		// 如果总权重为0，则平均分配权重
+		if weightSum == 0 {
+			// 随机选择一个渠道
+			randomIndex := common.GetRandomInt(len(filteredAbilities))
+			channel.Id = filteredAbilities[randomIndex].ChannelId
+		} else {
+			// 按权重随机选择
+			randomWeight := common.GetRandomInt(int(weightSum))
+			for _, ability := range filteredAbilities {
+				randomWeight -= int(ability.Weight) + 10
+				if randomWeight < 0 {
+					channel.Id = ability.ChannelId
+					break
+				}
 			}
 		}
 	} else {

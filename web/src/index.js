@@ -13,7 +13,7 @@ import './index.css';
 // 欢迎信息（二次开发者不准将此移除）
 // Welcome message (Secondary developers are not allowed to remove this)
 if (typeof window !== 'undefined') {
-  console.log('%cWe ❤ NewAPI%c Github: https://github.com/QuantumNous/new-api',
+  console.log('%cWe ❤ MIXAPI%c Github: https://github.com/aiprodcoder/MIXAPI',
     'color: #10b981; font-weight: bold; font-size: 24px;',
     'color: inherit; font-size: 14px;');
 }

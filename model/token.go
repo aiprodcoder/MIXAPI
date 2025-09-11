@@ -34,6 +34,8 @@ type Token struct {
 	RateLimitPerMinute int            `json:"rate_limit_per_minute" gorm:"default:0"` // 每分钟访问次数限制，0表示不限制
 	RateLimitPerDay    int            `json:"rate_limit_per_day" gorm:"default:0"`    // 每日访问次数限制，0表示不限制
 	LastRateLimitReset int64          `json:"last_rate_limit_reset" gorm:"default:0"` // 最后重置时间戳
+	ChannelTag         *string        `json:"channel_tag" gorm:"default:''"`          // 渠道标签限制
+	TotalUsageLimit    *int           `json:"total_usage_limit" gorm:"default:null"`  // 总使用次数限制，nil表示不限制
 	DeletedAt          gorm.DeletedAt `gorm:"index"`
 }
 
@@ -119,6 +121,13 @@ func ValidateUserToken(key string) (token *Token, err error) {
 			return token, errors.New(fmt.Sprintf("[sk-%s***%s] 该令牌额度已用尽 !token.UnlimitedQuota && token.RemainQuota = %d", keyPrefix, keySuffix, token.RemainQuota))
 		}
 
+		// 检查总使用次数限制
+		if token.TotalUsageLimit != nil && *token.TotalUsageLimit > 0 && token.TotalUsageCount >= *token.TotalUsageLimit {
+			keyPrefix := key[:3]
+			keySuffix := key[len(key)-3:]
+			return token, errors.New(fmt.Sprintf("[sk-%s***%s] 该令牌总使用次数已用完，限制次数: %d，已使用次数: %d", keyPrefix, keySuffix, *token.TotalUsageLimit, token.TotalUsageCount))
+		}
+
 		// 检查访问频率限制
 		if err := CheckRateLimit(token); err != nil {
 			return token, err
@@ -200,7 +209,7 @@ func (token *Token) Update() (err error) {
 	}()
 	err = DB.Model(token).Select("name", "status", "expired_time", "remain_quota", "unlimited_quota",
 		"model_limits_enabled", "model_limits", "allow_ips", "group", "daily_usage_count", "total_usage_count", "last_usage_date",
-		"rate_limit_per_minute", "rate_limit_per_day", "last_rate_limit_reset").Updates(token).Error
+		"rate_limit_per_minute", "rate_limit_per_day", "last_rate_limit_reset", "channel_tag", "total_usage_limit").Updates(token).Error
 	return err
 }
 

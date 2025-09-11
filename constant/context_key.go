@@ -15,6 +15,7 @@ const (
 	ContextKeyTokenSpecificChannelId ContextKey = "specific_channel_id"
 	ContextKeyTokenModelLimitEnabled ContextKey = "token_model_limit_enabled"
 	ContextKeyTokenModelLimit        ContextKey = "token_model_limit"
+	ContextKeyTokenChannelTag        ContextKey = "token_channel_tag" // 添加渠道标签上下文键
 
 	/* channel related keys */
 	ContextKeyChannelId                ContextKey = "channel_id"

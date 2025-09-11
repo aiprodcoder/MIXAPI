@@ -1443,7 +1443,7 @@ const EditChannel = (props) => {
                         </Text>
                         <Text
                           className="!text-semi-color-primary cursor-pointer"
-                          onClick={() => window.open('https://github.com/QuantumNous/new-api/blob/main/docs/channel/other_setting.md')}
+                          onClick={() => window.open('https://github.com/aiprodcoder/MIXAPI/blob/main/docs/channel/other_setting.md')}
                         >
                           {t('设置说明')}
                         </Text>

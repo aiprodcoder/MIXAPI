@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"one-api/common"
+	"one-api/constant"
 	"one-api/model"
 	"strconv"
 	"strings"
@@ -292,6 +293,12 @@ func SetupContextForToken(c *gin.Context, token *model.Token, parts ...string) e
 	}
 	c.Set("allow_ips", token.GetIpLimitsMap())
 	c.Set("token_group", token.Group)
+
+	// 设置令牌渠道标签到上下文中
+	if token.ChannelTag != nil && *token.ChannelTag != "" {
+		c.Set(string(constant.ContextKeyTokenChannelTag), *token.ChannelTag)
+	}
+
 	if len(parts) > 1 {
 		if model.IsAdmin(token.UserId) {
 			c.Set("specific_channel_id", parts[1])

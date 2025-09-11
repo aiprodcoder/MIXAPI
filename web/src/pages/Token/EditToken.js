@@ -43,6 +43,7 @@ const EditToken = (props) => {
   const formApiRef = useRef(null);
   const [models, setModels] = useState([]);
   const [groups, setGroups] = useState([]);
+  const [channelTags, setChannelTags] = useState([]); // 添加渠道标签状态
   const isEdit = props.editingToken.id !== undefined;
 
   const getInitValues = () => ({
@@ -57,6 +58,8 @@ const EditToken = (props) => {
     tokenCount: 1,
     rate_limit_per_minute: 0,
     rate_limit_per_day: 0,
+    channel_tag: null,
+    total_usage_limit: null, // 添加总使用次数限制初始值
   });
 
   const handleCancel = () => {
@@ -76,6 +79,26 @@ const EditToken = (props) => {
       formApiRef.current.setValue('expired_time', timestamp2string(timestamp));
     } else {
       formApiRef.current.setValue('expired_time', -1);
+    }
+  };
+
+  // 加载渠道标签列表
+  const loadChannelTags = async () => {
+    try {
+      let res = await API.get(`/api/token/tags`);
+      const { success, message, data } = res.data;
+      if (success) {
+        // 转换为选项格式
+        const tagOptions = data.map(tag => ({
+          label: tag,
+          value: tag
+        }));
+        setChannelTags(tagOptions);
+      } else {
+        showError(t(message));
+      }
+    } catch (error) {
+      showError(t('获取渠道标签失败'));
     }
   };
 
@@ -163,6 +186,7 @@ const EditToken = (props) => {
     }
     loadModels();
     loadGroups();
+    loadChannelTags(); // 加载渠道标签
   }, [props.editingToken.id]);
 
   useEffect(() => {
@@ -403,20 +427,20 @@ const EditToken = (props) => {
                         >
                           {t('一个月')}
                         </Button>
-                        <Button
+                       <Button
+                          theme='light'
+                          type='tertiary'
+                          onClick={() => setExpiredTime(0, 7,0, 0)}
+                        >
+                          {t('一周')}
+                        </Button>   <Button
                           theme='light'
                           type='tertiary'
                           onClick={() => setExpiredTime(0, 1, 0, 0)}
                         >
                           {t('一天')}
                         </Button>
-                        <Button
-                          theme='light'
-                          type='tertiary'
-                          onClick={() => setExpiredTime(0, 0, 1, 0)}
-                        >
-                          {t('一小时')}
-                        </Button>
+                      
                       </Space>
                     </Form.Slot>
                   </Col>
@@ -535,6 +559,20 @@ const EditToken = (props) => {
                       style={{ width: '100%' }}
                     />
                   </Col>
+                  {/* 添加渠道标签选择 */}
+                  <Col span={24}>
+                    <Form.Select
+                      field='channel_tag'
+                      label={t('渠道组标签')}
+                      placeholder={t('请选择渠道组标签，留空则不限制')}
+                      optionList={channelTags}
+                      extraText={t('设置后，此令牌只能使用指定标签下的渠道')}
+                      filter
+                      searchPosition='dropdown'
+                      showClear
+                      style={{ width: '100%' }}
+                    />
+                  </Col>
                   <Col span={12}>
                     <Form.InputNumber
                       field='rate_limit_per_minute'
@@ -554,6 +592,18 @@ const EditToken = (props) => {
                       min={0}
                       step={1}
                       extraText={t('限制每天最多访问次数，0表示不限制')}
+                      style={{ width: '100%' }}
+                    />
+                  </Col>
+                  {/* 添加总使用次数限制输入框 */}
+                  <Col span={24}>
+                    <Form.InputNumber
+                      field='total_usage_limit'
+                      label={t('总使用次数限制')}
+                      placeholder={t('留空表示不限制')}
+                      min={0}
+                      step={1}
+                      extraText={t('限制令牌总使用次数，0或留空表示不限制')}
                       style={{ width: '100%' }}
                     />
                   </Col>

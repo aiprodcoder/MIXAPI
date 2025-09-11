@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"one-api/common"
+	"one-api/constant"
 	"one-api/setting"
 	"sort"
 	"strings"
@@ -83,6 +84,13 @@ func CacheGetRandomSatisfiedChannel(c *gin.Context, group string, model string, 
 	var channel *Channel
 	var err error
 	selectGroup := group
+	// 获取令牌渠道标签
+	tokenChannelTag := common.GetContextKeyString(c, constant.ContextKeyTokenChannelTag)
+	var channelTag *string = nil
+	if tokenChannelTag != "" {
+		channelTag = &tokenChannelTag
+	}
+
 	if group == "auto" {
 		if len(setting.AutoGroups) == 0 {
 			return nil, selectGroup, errors.New("auto groups is not enabled")
@@ -104,7 +112,8 @@ func CacheGetRandomSatisfiedChannel(c *gin.Context, group string, model string, 
 			}
 		}
 	} else {
-		channel, err = getRandomSatisfiedChannel(group, model, retry)
+		// 传递channelTag参数给getRandomSatisfiedChannel
+		channel, err = getRandomSatisfiedChannelWithTag(group, model, retry, channelTag)
 		if err != nil {
 			return nil, group, err
 		}
@@ -113,6 +122,126 @@ func CacheGetRandomSatisfiedChannel(c *gin.Context, group string, model string, 
 		return nil, group, errors.New("channel not found")
 	}
 	return channel, selectGroup, nil
+}
+
+// 新增带标签过滤的渠道选择函数
+func getRandomSatisfiedChannelWithTag(group string, model string, retry int, channelTag *string) (*Channel, error) {
+	if strings.HasPrefix(model, "gpt-4-gizmo") {
+		model = "gpt-4-gizmo-*"
+	}
+	if strings.HasPrefix(model, "gpt-4o-gizmo") {
+		model = "gpt-4o-gizmo-*"
+	}
+
+	// if memory cache is disabled, get channel directly from database
+	if !common.MemoryCacheEnabled {
+		return GetRandomSatisfiedChannel(group, model, retry, channelTag)
+	}
+
+	channelSyncLock.RLock()
+	defer channelSyncLock.RUnlock()
+	channels := group2model2channels[group][model]
+
+	if len(channels) == 0 {
+		return nil, errors.New("channel not found")
+	}
+
+	// 过滤符合标签要求的渠道
+	var filteredChannels []int
+	for _, channelId := range channels {
+		if channel, ok := channelsIDM[channelId]; ok {
+			// 如果没有指定标签要求，则所有渠道都符合
+			if channelTag == nil || *channelTag == "" {
+				filteredChannels = append(filteredChannels, channelId)
+			} else {
+				// 如果指定了标签要求，则只选择匹配标签的渠道
+				channelTagStr := channel.GetTag()
+				if channelTagStr == *channelTag {
+					filteredChannels = append(filteredChannels, channelId)
+				}
+			}
+		}
+	}
+
+	// 如果没有符合标签要求的渠道，返回错误
+	if len(filteredChannels) == 0 {
+		if channelTag != nil && *channelTag != "" {
+			return nil, fmt.Errorf("没有找到标签为 '%s' 的可用渠道", *channelTag)
+		}
+		return nil, errors.New("channel not found")
+	}
+
+	if len(filteredChannels) == 1 {
+		if channel, ok := channelsIDM[filteredChannels[0]]; ok {
+			return channel, nil
+		}
+		return nil, fmt.Errorf("数据库一致性错误，渠道# %d 不存在，请联系管理员修复", filteredChannels[0])
+	}
+
+	uniquePriorities := make(map[int]bool)
+	for _, channelId := range filteredChannels {
+		if channel, ok := channelsIDM[channelId]; ok {
+			uniquePriorities[int(channel.GetPriority())] = true
+		} else {
+			return nil, fmt.Errorf("数据库一致性错误，渠道# %d 不存在，请联系管理员修复", channelId)
+		}
+	}
+	var sortedUniquePriorities []int
+	for priority := range uniquePriorities {
+		sortedUniquePriorities = append(sortedUniquePriorities, priority)
+	}
+	sort.Sort(sort.Reverse(sort.IntSlice(sortedUniquePriorities)))
+
+	if retry >= len(uniquePriorities) {
+		retry = len(uniquePriorities) - 1
+	}
+	targetPriority := int64(sortedUniquePriorities[retry])
+
+	// get the priority for the given retry number
+	var targetChannels []*Channel
+	for _, channelId := range filteredChannels {
+		if channel, ok := channelsIDM[channelId]; ok {
+			if channel.GetPriority() == targetPriority {
+				targetChannels = append(targetChannels, channel)
+			}
+		} else {
+			return nil, fmt.Errorf("数据库一致性错误，渠道# %d 不存在，请联系管理员修复", channelId)
+		}
+	}
+
+	// 如果只有一个符合条件的渠道，直接返回
+	if len(targetChannels) == 1 {
+		return targetChannels[0], nil
+	}
+
+	// 平滑系数
+	smoothingFactor := 10
+	// Calculate the total weight of all channels up to endIdx
+	totalWeight := 0
+	for _, channel := range targetChannels {
+		totalWeight += channel.GetWeight() + smoothingFactor
+	}
+
+	// 如果总权重为0，则平均分配权重
+	if totalWeight == 0 {
+		// 随机选择一个渠道
+		randomIndex := common.GetRandomInt(len(targetChannels))
+		return targetChannels[randomIndex], nil
+	}
+
+	// Generate a random value in the range [0, totalWeight)
+	randomWeight := common.GetRandomInt(totalWeight)
+
+	// Find a channel based on its weight
+	for _, channel := range targetChannels {
+		randomWeight -= channel.GetWeight() + smoothingFactor
+		if randomWeight < 0 {
+			return channel, nil
+		}
+	}
+
+	// 如果循环结束还没有找到，则返回第一个渠道（兜底）
+	return targetChannels[0], nil
 }
 
 func getRandomSatisfiedChannel(group string, model string, retry int) (*Channel, error) {
@@ -125,7 +254,7 @@ func getRandomSatisfiedChannel(group string, model string, retry int) (*Channel,
 
 	// if memory cache is disabled, get channel directly from database
 	if !common.MemoryCacheEnabled {
-		return GetRandomSatisfiedChannel(group, model, retry)
+		return GetRandomSatisfiedChannel(group, model, retry, nil)
 	}
 
 	channelSyncLock.RLock()

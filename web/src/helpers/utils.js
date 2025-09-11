@@ -12,8 +12,10 @@ const HTMLToastContent = ({ htmlContent }) => {
 export default HTMLToastContent;
 export function isAdmin() {
   let user = localStorage.getItem('user');
+  console.log("===user info==",user)
   if (!user) return false;
   user = JSON.parse(user);
+  console.log("===user.role==",user.role,user.role >= 10)
   return user.role >= 10;
 }
 

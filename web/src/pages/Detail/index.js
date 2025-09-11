@@ -219,6 +219,117 @@ const Detail = (props) => {
     tpm: []
   });
 
+  // ========== Additional State for new charts ==========
+  const [channelData, setChannelData] = useState([]);
+  const [tokenData, setTokenData] = useState([]);
+  const [userData, setUserData] = useState([]);
+
+  // ========== Additional Chart Specs State ==========
+  const [spec_channel_line, setSpecChannelLine] = useState({
+    type: 'line',
+    data: [
+      {
+        id: 'channelData',
+        values: [],
+      },
+    ],
+    xField: 'Time',
+    yField: 'Count',
+    seriesField: 'Channel',
+    legends: {
+      visible: true,
+      selectMode: 'single',
+    },
+    title: {
+      visible: true,
+      text: t('按渠道调用次数统计'),
+      subtext: '',
+    },
+    tooltip: {
+      mark: {
+        content: [
+          {
+            key: (datum) => datum['Channel'],
+            value: (datum) => renderNumber(datum['Count']),
+          },
+        ],
+      },
+    },
+    color: {
+      specified: modelColorMap,
+    },
+  });
+
+  const [spec_token_line, setSpecTokenLine] = useState({
+    type: 'line',
+    data: [
+      {
+        id: 'tokenData',
+        values: [],
+      },
+    ],
+    xField: 'Time',
+    yField: 'Count',
+    seriesField: 'Token',
+    legends: {
+      visible: true,
+      selectMode: 'single',
+    },
+    title: {
+      visible: true,
+      text: t('按令牌调用次数统计'),
+      subtext: '',
+    },
+    tooltip: {
+      mark: {
+        content: [
+          {
+            key: (datum) => datum['Token'],
+            value: (datum) => renderNumber(datum['Count']),
+          },
+        ],
+      },
+    },
+    color: {
+      specified: modelColorMap,
+    },
+  });
+
+  const [spec_user_line, setSpecUserLine] = useState({
+    type: 'line',
+    data: [
+      {
+        id: 'userData',
+        values: [],
+      },
+    ],
+    xField: 'Time',
+    yField: 'Count',
+    seriesField: 'User',
+    legends: {
+      visible: true,
+      selectMode: 'single',
+    },
+    title: {
+      visible: true,
+      text: t('按用户调用次数统计'),
+      subtext: '',
+    },
+    tooltip: {
+      mark: {
+        content: [
+          {
+            key: (datum) => datum['User'],
+            value: (datum) => renderNumber(datum['Count']),
+          },
+        ],
+      },
+    },
+    color: {
+      specified: modelColorMap,
+    },
+  });
+
   // ========== Additional Refs for new cards ==========
   const announcementScrollRef = useRef(null);
   const faqScrollRef = useRef(null);
@@ -667,6 +778,80 @@ const Detail = (props) => {
     }
   }, [start_timestamp, end_timestamp, username, dataExportDefaultTime, isAdminUser]);
 
+  // ========== New Functions for Loading Statistics Data ==========
+  const loadChannelData = useCallback(async () => {
+    if (!isAdminUser) return;
+
+    try {
+      let localStartTimestamp = Date.parse(start_timestamp) / 1000;
+      let localEndTimestamp = Date.parse(end_timestamp) / 1000;
+      const url = `/api/statistics/channel?start_timestamp=${localStartTimestamp}&end_timestamp=${localEndTimestamp}&default_time=${dataExportDefaultTime}`;
+
+      const res = await API.get(url);
+      const { success, message, data } = res.data;
+      if (success) {
+        setChannelData(data || []);
+        updateChannelChartData(data || []);
+      } else {
+        showError(message);
+      }
+    } catch (error) {
+      console.error('Error loading channel data:', error);
+    }
+  }, [start_timestamp, end_timestamp, dataExportDefaultTime, isAdminUser]);
+
+  const loadTokenData = useCallback(async () => {
+    if (!isAdminUser) return;
+
+    try {
+      let localStartTimestamp = Date.parse(start_timestamp) / 1000;
+      let localEndTimestamp = Date.parse(end_timestamp) / 1000;
+      const url = `/api/statistics/token?start_timestamp=${localStartTimestamp}&end_timestamp=${localEndTimestamp}&default_time=${dataExportDefaultTime}`;
+
+      const res = await API.get(url);
+      const { success, message, data } = res.data;
+      if (success) {
+        setTokenData(data || []);
+        updateTokenChartData(data || []);
+      } else {
+        showError(message);
+      }
+    } catch (error) {
+      console.error('Error loading token data:', error);
+    }
+  }, [start_timestamp, end_timestamp, dataExportDefaultTime, isAdminUser]);
+
+  const loadUserData = useCallback(async () => {
+    if (!isAdminUser) return;
+
+    try {
+      let localStartTimestamp = Date.parse(start_timestamp) / 1000;
+      let localEndTimestamp = Date.parse(end_timestamp) / 1000;
+      const url = `/api/statistics/user?start_timestamp=${localStartTimestamp}&end_timestamp=${localEndTimestamp}&default_time=${dataExportDefaultTime}`;
+
+      const res = await API.get(url);
+      const { success, message, data } = res.data;
+      if (success) {
+        setUserData(data || []);
+        updateUserChartData(data || []);
+      } else {
+        showError(message);
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+    }
+  }, [start_timestamp, end_timestamp, dataExportDefaultTime, isAdminUser]);
+
+  const loadAllStatisticsData = useCallback(async () => {
+    if (!isAdminUser) return;
+
+    await Promise.all([
+      loadChannelData(),
+      loadTokenData(),
+      loadUserData()
+    ]);
+  }, [loadChannelData, loadTokenData, loadUserData, isAdminUser]);
+
   const loadUptimeData = useCallback(async () => {
     setUptimeLoading(true);
     try {
@@ -689,7 +874,9 @@ const Detail = (props) => {
 
   const refresh = useCallback(async () => {
     await Promise.all([loadQuotaData(), loadUptimeData()]);
-  }, [loadQuotaData, loadUptimeData]);
+    // 加载新的统计数据
+    await loadAllStatisticsData();
+  }, [loadQuotaData, loadUptimeData, loadAllStatisticsData]);
 
   const handleSearchConfirm = useCallback(() => {
     refresh();
@@ -699,7 +886,9 @@ const Detail = (props) => {
   const initChart = useCallback(async () => {
     await loadQuotaData();
     await loadUptimeData();
-  }, [loadQuotaData, loadUptimeData]);
+    // 初始化新的统计数据
+    await loadAllStatisticsData();
+  }, [loadQuotaData, loadUptimeData, loadAllStatisticsData]);
 
   const showSearchModal = useCallback(() => {
     setSearchModalVisible(true);
@@ -999,6 +1188,100 @@ const Detail = (props) => {
     generateChartTimePoints, updateChartSpec, updateMapValue, t
   ]);
 
+  // ========== New Functions for Updating Chart Data ==========
+  const updateChannelChartData = useCallback((data) => {
+    if (!data || data.length === 0) return;
+
+    // 按渠道和时间分组数据
+    const groupedData = {};
+    data.forEach(item => {
+      const key = `${item.time}-${item.channel_name || 'Channel ' + item.channel_id}`;
+      if (!groupedData[key]) {
+        groupedData[key] = {
+          Time: item.time,
+          Channel: item.channel_name || 'Channel ' + item.channel_id,
+          Count: 0
+        };
+      }
+      groupedData[key].Count += item.count;
+    });
+
+    // 转换为数组并排序
+    const chartData = Object.values(groupedData);
+    chartData.sort((a, b) => a.Time.localeCompare(b.Time));
+
+    // 更新图表规格
+    updateChartSpec(
+      setSpecChannelLine,
+      chartData,
+      `${t('总计')}：${chartData.reduce((sum, item) => sum + item.Count, 0)}`,
+      modelColorMap,
+      'channelData'
+    );
+  }, [updateChartSpec, t]);
+
+  const updateTokenChartData = useCallback((data) => {
+    if (!data || data.length === 0) return;
+
+    // 按令牌和时间分组数据
+    const groupedData = {};
+    data.forEach(item => {
+      const key = `${item.time}-${item.token_name}`;
+      if (!groupedData[key]) {
+        groupedData[key] = {
+          Time: item.time,
+          Token: item.token_name,
+          Count: 0
+        };
+      }
+      groupedData[key].Count += item.count;
+    });
+
+    // 转换为数组并排序
+    const chartData = Object.values(groupedData);
+    chartData.sort((a, b) => a.Time.localeCompare(b.Time));
+
+    // 更新图表规格
+    updateChartSpec(
+      setSpecTokenLine,
+      chartData,
+      `${t('总计')}：${chartData.reduce((sum, item) => sum + item.Count, 0)}`,
+      modelColorMap,
+      'tokenData'
+    );
+  }, [updateChartSpec, t]);
+
+  const updateUserChartData = useCallback((data) => {
+    if (!data || data.length === 0) return;
+
+    // 按用户和时间分组数据
+    const groupedData = {};
+    data.forEach(item => {
+      const key = `${item.time}-${item.username}`;
+      if (!groupedData[key]) {
+        groupedData[key] = {
+          Time: item.time,
+          User: item.username,
+          Count: 0
+        };
+      }
+      groupedData[key].Count += item.count;
+    });
+
+    // 转换为数组并排序
+    const chartData = Object.values(groupedData);
+    chartData.sort((a, b) => a.Time.localeCompare(b.Time));
+
+    // 更新图表规格
+    updateChartSpec(
+      setSpecUserLine,
+      chartData,
+      `${t('总计')}：${chartData.reduce((sum, item) => sum + item.Count, 0)}`,
+      modelColorMap,
+      'userData'
+    );
+  }, [updateChartSpec, t]);
+
   // ========== Status Data Management ==========
   const announcementLegendData = useMemo(() => [
     { color: 'grey', label: t('默认'), type: 'default' },
@@ -1296,6 +1579,29 @@ const Detail = (props) => {
                       {t('调用次数排行')}
                     </span>
                   } itemKey="4" />
+                  {isAdminUser && (
+
+
+                    <TabPane tab={
+                      <span>
+                        <IconHistogram />
+                        {t('按渠道统计')}
+                      </span>
+                    } itemKey="5" />)}
+                  {isAdminUser && (<TabPane tab={
+                    <span>
+                      <IconHistogram />
+                      {t('按令牌统计')}
+                    </span>
+                  } itemKey="6" />)}
+                  {isAdminUser && (<TabPane tab={
+                    <span>
+                      <IconHistogram />
+                      {t('按用户统计')}
+                    </span>
+                  } itemKey="7" />
+
+                  )}
                 </Tabs>
               </div>
             }
@@ -1323,6 +1629,24 @@ const Detail = (props) => {
               {activeChartTab === '4' && (
                 <VChart
                   spec={spec_rank_bar}
+                  option={CHART_CONFIG}
+                />
+              )}
+              {activeChartTab === '5' && isAdminUser && (
+                <VChart
+                  spec={spec_channel_line}
+                  option={CHART_CONFIG}
+                />
+              )}
+              {activeChartTab === '6' && isAdminUser && (
+                <VChart
+                  spec={spec_token_line}
+                  option={CHART_CONFIG}
+                />
+              )}
+              {activeChartTab === '7' && isAdminUser && (
+                <VChart
+                  spec={spec_user_line}
                   option={CHART_CONFIG}
                 />
               )}
