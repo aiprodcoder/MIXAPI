@@ -7,129 +7,78 @@
 
 # MIXAPI
 
-🍥新一代大模型网关与AI资产管理系统
+🍥新一代大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
 
  
 <p align="center">
   <a href="https://raw.githubusercontent.com/Calcium-Ion/new-api/main/LICENSE">
     <img src="https://img.shields.io/github/license/Calcium-Ion/new-api?color=brightgreen" alt="license">
   </a>
-  <a href="https://github.com/Calcium-Ion/new-api/releases/latest">
-    <img src="https://img.shields.io/github/v/release/Calcium-Ion/new-api?color=brightgreen&include_prereleases" alt="release">
-  </a>
-  <a href="https://github.com/users/Calcium-Ion/packages/container/package/new-api">
-    <img src="https://img.shields.io/badge/docker-ghcr.io-blue" alt="docker">
-  </a>
-  <a href="https://hub.docker.com/r/CalciumIon/new-api">
-    <img src="https://img.shields.io/badge/docker-dockerHub-blue" alt="docker">
-  </a>
-  <a href="https://goreportcard.com/report/github.com/Calcium-Ion/new-api">
-    <img src="https://goreportcard.com/badge/github.com/Calcium-Ion/new-api" alt="GoReportCard">
-  </a>
+ 
 </p>
 </div>
 
 ## 📝 项目说明
 
-> [!NOTE]  
-> 本项目为开源项目，由[New API](https://github.com/Calcium-Ion/new-api)二次开发而来
+**全新AI大模型接口管理与API聚合分发系统**，支持将多种大模型转换成统一的OpenAI兼容接口,Claude接口,Gemini接口，可供个人或者企业内部大模型API
+统一管理和渠道分发使用(key管理与二次分发)，支持国际国内所有主流大模型，gemini,claude,qwen3,kimi-k2,豆包等，提供单可执行文件，
+docker镜像，一键部署，开箱即用，完全开源，自主可控！<br>
+ * MixAPI基于New-API和One-API，整合了NewAPI,OneAPI所有重要功能及问题改进优化，内置众多第三方插件为一身，成为名副其实的全能六边形战士！  
+ * 超高性能优化，用魔法打败魔法，对主要转发通路的代码用AI大模型进行多轮特别优化，写出了人类想象不出的高效代码，提高大流量高并发场景性能50%以上！  
+ * **MixAPI-PRO版本**，专门针对公司企业客户，去掉收费，充值，用户注册等繁琐环节,聚焦公司内部大模型API统一管理，安全审计，隐私防泄漏，大模型调用次数限制，频率限制等企业内部管理核心问题
 
-> [!IMPORTANT]  
-> - 本项目仅供个人学习使用，不保证稳定性，且不提供任何技术支持。
-> - 使用者必须在遵循 OpenAI 的[使用条款](https://openai.com/policies/terms-of-use)以及**法律法规**的情况下使用，不得用于非法用途。
-> - 根据[《生成式人工智能服务管理暂行办法》](http://www.cac.gov.cn/2023-07/13/c_1690898327029107.htm)的要求，请勿对中国地区公众提供一切未经备案的生成式人工智能服务。
 
-
-## 📚 文档
-
-详细文档请访问我们的官方Wiki：[https://docs.newapi.pro/](https://docs.newapi.pro/)
-
-也可访问AI生成的DeepWiki:
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/QuantumNous/new-api)
+ <div align="center"> <img src="/img/mixapi-info.jpg" width = "960" height = "520" alt="mixapi" /> </div>
 
 ## ✨ 主要特性
 
-MIXAPI提供了丰富的功能，详细特性请参考[特性说明](https://docs.newapi.pro/wiki/features-introduction)：
+MIXAPI提供了丰富的功能：
 
-1. 🎨 全新的UI界面
-2. 🌍 多语言支持
-3. 💰 支持在线充值功能（易支付）
-4. 🔍 支持用key查询使用额度（配合[neko-api-key-tool](https://github.com/Calcium-Ion/neko-api-key-tool)）
-5. 🔄 兼容原版One API的数据库
-6. 💵 支持模型按次数收费
-7. ⚖️ 支持渠道加权随机
-8. 📈 数据看板（控制台）
-9. 🔒 令牌分组、模型限制
-10. 🤖 支持更多授权登陆方式（LinuxDO,Telegram、OIDC）
-11. 🔄 支持Rerank模型（Cohere和Jina），[接口文档](https://docs.newapi.pro/api/jinaai-rerank)
-12. ⚡ 支持OpenAI Realtime API（包括Azure渠道），[接口文档](https://docs.newapi.pro/api/openai-realtime)
-13. ⚡ 支持Claude Messages 格式，[接口文档](https://docs.newapi.pro/api/anthropic-chat)
-14. 支持使用路由/chat2link进入聊天界面
-15. 🧠 支持通过模型名称后缀设置 reasoning effort：
-    1. OpenAI o系列模型
-        - 添加后缀 `-high` 设置为 high reasoning effort (例如: `o3-mini-high`)
-        - 添加后缀 `-medium` 设置为 medium reasoning effort (例如: `o3-mini-medium`)
-        - 添加后缀 `-low` 设置为 low reasoning effort (例如: `o3-mini-low`)
-    2. Claude 思考模型
-        - 添加后缀 `-thinking` 启用思考模式 (例如: `claude-3-7-sonnet-20250219-thinking`)
-16. 🔄 思考转内容功能
-17. 🔄 针对用户的模型限流功能
-18. 💰 缓存计费支持，开启后可以在缓存命中时按照设定的比例计费：
-    1. 在 `系统设置-运营设置` 中设置 `提示缓存倍率` 选项
-    2. 在渠道中设置 `提示缓存倍率`，范围 0-1，例如设置为 0.5 表示缓存命中时按照 50% 计费
-    3. 支持的渠道：
-        - [x] OpenAI
-        - [x] Azure
-        - [x] DeepSeek
-        - [x] Claude
-19. 🔄 新增对token令牌的控制，可控制分钟请求次数限制和日请求次数限制
-20. 📊 新增用量日统计
-21. 📊 新增用量月统计
-22. 📋 新增令牌管理显示该令牌的今日次数和总次数
-23. 📝 新增通过令牌请求的内容记录显示
-24. 📝 支持通过令牌查询余额
+* 🎨 全新的UI界面
+* 🌍 多语言支持
+* 💰 支持在线充值功能（易支付）
+* 🔍 支持用key查询使用额度(已经内置)
+* 🔄 兼容原版One API的数据库
+* 💵 支持模型按次数收费
+* ⚖️ 支持渠道加权随机
+* 📈 数据看板（控制台）
+* 🔒 令牌分组、模型限制
+* 🤖 支持更多授权登陆方式（LinuxDO,Telegram、OIDC）
+* 🔄 支持Rerank模型（Cohere和Jina）
+* ⚡ 支持OpenAI Realtime API（包括Azure渠道）
+* ⚡ 支持Claude Messages 格式
+* 💵 支持使用路由/chat2link进入聊天界面
+* 🔄 针对用户的模型限流功能
+* 💰 缓存计费支持，开启后可以在缓存命中时按照设定的比例计费：
+* 🔄 新增对token令牌的控制，可控制分钟请求次数限制和日请求次数限制
+  <div align="center"> <img src="/img/git1.png" width = "960" height = "460" alt="mixapi" /> </div>
 
-## 模型支持
+* 📊 新增用量日统计
+  <div align="center"> <img src="/img/git2.png" width = "960" height = "460" alt="mixapi" /> </div>
 
-此版本支持多种模型，详情请参考[接口文档-中继接口](https://docs.newapi.pro/api)：
 
-1. 第三方模型 **gpts** （gpt-4-gizmo-*）
-2. 第三方渠道[Midjourney-Proxy(Plus)](https://github.com/novicezk/midjourney-proxy)接口，[接口文档](https://docs.newapi.pro/api/midjourney-proxy-image)
-3. 第三方渠道[Suno API](https://github.com/Suno-API/Suno-API)接口，[接口文档](https://docs.newapi.pro/api/suno-music)
-4. 自定义渠道，支持填入完整调用地址
-5. Rerank模型（[Cohere](https://cohere.ai/)和[Jina](https://jina.ai/)），[接口文档](https://docs.newapi.pro/api/jinaai-rerank)
-6. Claude Messages 格式，[接口文档](https://docs.newapi.pro/api/anthropic-chat)
-7. Dify，当前仅支持chatflow
+* 📊 新增用量月统计
+ <div align="center"> <img src="/img/git3.png" width = "960" height = "460" alt="mixapi" /> </div>
 
-## 环境变量配置
 
-详细配置说明请参考[安装指南-环境变量配置](https://docs.newapi.pro/installation/environment-variables)：
 
-- `GENERATE_DEFAULT_TOKEN`：是否为新注册用户生成初始令牌，默认为 `false`
-- `STREAMING_TIMEOUT`：流式回复超时时间，默认300秒
-- `DIFY_DEBUG`：Dify渠道是否输出工作流和节点信息，默认 `true`
-- `FORCE_STREAM_OPTION`：是否覆盖客户端stream_options参数，默认 `true`
-- `GET_MEDIA_TOKEN`：是否统计图片token，默认 `true`
-- `GET_MEDIA_TOKEN_NOT_STREAM`：非流情况下是否统计图片token，默认 `true`
-- `UPDATE_TASK`：是否更新异步任务（Midjourney、Suno），默认 `true`
-- `COHERE_SAFETY_SETTING`：Cohere模型安全设置，可选值为 `NONE`, `CONTEXTUAL`, `STRICT`，默认 `NONE`
-- `GEMINI_VISION_MAX_IMAGE_NUM`：Gemini模型最大图片数量，默认 `16`
-- `MAX_FILE_DOWNLOAD_MB`: 最大文件下载大小，单位MB，默认 `20`
-- `CRYPTO_SECRET`：加密密钥，用于加密数据库内容
-- `AZURE_DEFAULT_API_VERSION`：Azure渠道默认API版本，默认 `2025-04-01-preview`
-- `NOTIFICATION_LIMIT_DURATION_MINUTE`：通知限制持续时间，默认 `10`分钟
-- `NOTIFY_LIMIT_COUNT`：用户通知在指定持续时间内的最大数量，默认 `2`
-- `ERROR_LOG_ENABLED=true`: 是否记录并显示错误日志，默认`false`
+* 📋 新增令牌管理显示该令牌的今日次数和总次数
+ <div align="center"> <img src="/img/git4.png" width = "960" height = "460" alt="mixapi" /> </div>
+
+
+
+* 📝 新增通过令牌请求的内容记录显示
+ <div align="center"> <img src="/img/git5.png" width = "960" height = "460" alt="mixapi" /> </div>
+
+
+
+* 📝 支持通过令牌直接查询余额，无需登录 
+ <div align="center"> <img src="/img/git6.png" width = "960" height = "460" alt="mixapi" /> </div>
+
 
 ## 部署
 
 详细部署指南请参考[安装指南-部署方式](https://docs.newapi.pro/installation)：
-
- 
-
-### 多机部署注意事项
-- 必须设置环境变量 `SESSION_SECRET`，否则会导致多机部署时登录状态不一致
-- 如果公用Redis，必须设置 `CRYPTO_SECRET`，否则会导致多机部署时Redis内容无法获取
 
 ### 部署要求
 - 本地数据库（默认）：SQLite（Docker部署必须挂载`/data`目录）
@@ -183,6 +132,3 @@ docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:12345
 - [反馈问题](https://docs.newapi.pro/support/feedback-issues)
 - [常见问题](https://docs.newapi.pro/support/faq)
 
-## 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Calcium-Ion/new-api&type=Date)](https://star-history.com/#Calcium-Ion/new-api&Date)
