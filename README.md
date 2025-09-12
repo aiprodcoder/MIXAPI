@@ -128,5 +128,5 @@ docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:12345
 ## 帮助支持
 
 * 社区交流 ，反馈问题 ，商务咨询 请扫描加入微信群，我们一起把MixAPI做到最好
- <div align="center"> <img src="/img/wx.jpg" width = "960" height = "460" alt="mixapi" /> </div>  
+ <div align="center"> <img src="/img/wx.jpg" width = "300" height = "344" alt="mixapi" /> </div>  
 
