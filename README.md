@@ -127,8 +127,6 @@ docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:12345
 
 ## 帮助支持
 
-如有问题，请参考[帮助支持](https://docs.newapi.pro/support)：
-- [社区交流](https://docs.newapi.pro/support/community-interaction)
-- [反馈问题](https://docs.newapi.pro/support/feedback-issues)
-- [常见问题](https://docs.newapi.pro/support/faq)
+* 社区交流 ，反馈问题 ，商务咨询 请扫描加入微信群，我们一起把MixAPI做到最好
+ <div align="center"> <img src="/img/wx.jpg" width = "960" height = "460" alt="mixapi" /> </div>  
 
