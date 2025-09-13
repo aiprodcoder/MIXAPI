@@ -75,6 +75,9 @@ MIXAPI提供了丰富的功能：
 * 📝 支持通过令牌直接查询余额，无需登录 
  <div align="center"> <img src="/img/git6.png" width = "960" height = "460" alt="mixapi" /> </div>
 
+* 📝 支持令牌中选择渠道组,设定该令牌只有渠道组下面的渠道可用,并结合选择渠道组,选择模型达到限制需求
+* 📝 API令牌中增加控制使用总次数限制,当达到总次数限制时返回额度已用完
+ <div align="center"> <img src="/img/git7.png" width = "960" height = "460" alt="mixapi" /> </div>
 
 ## 部署
 
@@ -82,21 +85,31 @@ MIXAPI提供了丰富的功能：
 
 ### 部署要求
 - 本地数据库（默认）：SQLite（Docker部署必须挂载`/data`目录）
-- 远程数据库：MySQL版本 >= 5.7.8，PgSQL版本 >= 9.6
+- 远程数据库：MySQL版本 >= 5.7.8，PgSQL版本 >= 9.6 (非必须)
 
 ### 部署方式
- 
+#### 下载二进制程序双击运行 (小白推荐)
+ windows对应下载release里面的.exe文件双击运行,下载好.exe程序, 双击运行,运行起来后通过浏览器访问
+```shell
+http://localhost:3000
+```
 #### 本地运行方式
+下载本项目源码  安装好go环境, 然后在根目录运行命令 , 可用于本地开发测试
 ```shell
 go run main.go
 ```
-#### 构造并使用Docker镜像
+#### 通过docker 容器运行(docker推荐)
+直接下载docker镜像运行,把镜像通过docker load加载上,文件在release里面
 ```shell
-# 使用SQLite
-docker run --name mixapi -d --restart always -p 3000:3000 -e TZ=Asia/Shanghai -v /home/ubuntu/data/mixapi:/data 打包好的镜像名称:latest
+# 使用SQLite 无需配置数据库连接直接运行如下命令
+docker run --name mixapicon \
+--restart always \
+-e TZ="Asia/Shanghai" \
+-v /home/ubuntu/data/mixapi:/data  \
+-d  -p 3000:3000  mixapi:v1
 
-# 使用MySQL
-docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:123456@tcp(localhost:3306)/oneapi" -e TZ=Asia/Shanghai -v /home/ubuntu/data/mixapi:/data 打包好的镜像名称:latest
+# 使用MySQL  需要对应修改mysql的账号密码
+docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:123456@tcp(localhost:3306)/oneapi" -e TZ=Asia/Shanghai -v /home/ubuntu/data/mixapi:/data mixapi:v1
 ```
 
 ## 渠道重试与缓存
