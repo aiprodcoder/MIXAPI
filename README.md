@@ -96,6 +96,8 @@ http://localhost:3000
 #### 本地运行方式
 下载本项目源码  安装好go环境, 然后在根目录运行命令 , 可用于本地开发测试
 ```shell
+git clone https://github.com/aiprodcoder/MIXAPI
+cd MIXAPI
 go run main.go
 ```
 #### 通过docker 容器运行(docker推荐)
