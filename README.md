@@ -84,7 +84,7 @@ MIXAPI提供了丰富的功能：
 详细部署指南请参考[安装指南-部署方式](https://docs.newapi.pro/installation)：
 
 ### 部署要求
-- 本地数据库（默认）：SQLite（Docker部署必须挂载`/data`目录）
+- 本地数据库（默认）：SQLite（Docker部署默认使用SQLite）
 - 远程数据库：MySQL版本 >= 5.7.8，PgSQL版本 >= 9.6 (非必须)
 
 ### 部署方式
@@ -106,26 +106,15 @@ go run main.go
 ```shell
 wget https://github.com/aiprodcoder/MIXAPI/blob/main/Dockerfile
 docker build -t mixapi .    (默认AMD64平台)
-//ARM平台 docker build --build-arg TARGETPLATFORM=linux/arm64 -t mixapi .
+# ARM平台 docker build --build-arg TARGETPLATFORM=linux/arm64 -t mixapi .
 
-//测试运行命令
+# 测试运行命令
 docker run -it --rm  -p 3000:3000  -v $PWD/logs:/app/logs mixapi:latest    ($PWD为当前目录)
 
+# 正式运行命令
+docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD/logs:/app/logs  -e TZ=Asia/Shanghai mixapi:latest    ($PWD为当前工作目录)
 ```
 
-#### 通过docker 容器运行(docker推荐)
-直接下载docker镜像运行,把镜像通过docker load加载上,文件在release里面
-```shell
-# 使用SQLite 无需配置数据库连接直接运行如下命令
-docker run --name mixapicon \
---restart always \
--e TZ="Asia/Shanghai" \
--v /home/ubuntu/data/mixapi:/data  \
--d  -p 3000:3000  mixapi:v1
-
-# 使用MySQL  需要对应修改mysql的账号密码
-docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:123456@tcp(localhost:3306)/oneapi" -e TZ=Asia/Shanghai -v /home/ubuntu/data/mixapi:/data mixapi:v1
-```
 
 ## 渠道重试与缓存
 渠道重试功能已经实现，可以在`设置->运营设置->通用设置`设置重试次数，**建议开启缓存**功能。
@@ -144,14 +133,7 @@ docker run --name mixapi -d --restart always -p 3000:3000 -e SQL_DSN="root:12345
 - [实时对话接口（Realtime）](https://docs.newapi.pro/api/openai-realtime)
 - [Claude聊天接口（messages）](https://docs.newapi.pro/api/anthropic-chat)
 
-## 相关项目
-- [One API](https://github.com/songquanpeng/one-api)：原版项目
-- [Midjourney-Proxy](https://github.com/novicezk/midjourney-proxy)：Midjourney接口支持
-- [chatnio](https://github.com/Deeptrain-Community/chatnio)：下一代AI一站式B/C端解决方案
-- [neko-api-key-tool](https://github.com/Calcium-Ion/neko-api-key-tool)：用key查询使用额度
 
-其他基于New API的项目：
-- [new-api-horizon](https://github.com/Calcium-Ion/new-api-horizon)：New API高性能优化版
 
 ## 帮助支持
 
