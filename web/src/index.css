@@ -222,6 +222,99 @@ code {
   padding-top: 12px;
 }
 
+/* ==================== 暗色侧边栏样式 (固定暗色，不随主题变化) ==================== */
+.dark-sidebar {
+  background: #1e293b !important; /* slate-800 */
+}
+
+.dark-sidebar-nav {
+  background: #1e293b !important; /* slate-800 */
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+.dark-sidebar-nav-item {
+  border-radius: 6px;
+  margin: 3px 8px;
+  transition: all 0.15s ease;
+  padding: 8px 12px;
+  color: #cbd5e1 !important; /* slate-300 */
+  background-color: transparent !important;
+}
+
+.dark-sidebar-nav-item:hover {
+  background-color: #334155 !important; /* slate-700 */
+  color: #ffffff !important;
+}
+
+.dark-sidebar-nav-item-selected,
+.sidebar-nav .dark-sidebar-nav-item-selected,
+.sidebar-container .dark-sidebar-nav-item-selected,
+.sidebar-nav-item.dark-sidebar-nav-item-selected,
+.dark-sidebar-nav .dark-sidebar-nav-item-selected,
+.dark-sidebar .dark-sidebar-nav-item-selected {
+  background-color: #0086ff !important; /* 将选中项背景色改为 #0086ff */
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.dark-sidebar-divider {
+  margin: 4px 8px;
+  border-color: #334155 !important; /* slate-700 */
+  opacity: 1;
+}
+
+.dark-sidebar-group-label {
+  padding: 4px 15px 8px;
+  color: #94a3b8 !important; /* slate-400 */
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 1;
+}
+
+.dark-sidebar-collapse-button {
+  background-color: #1e293b !important; /* slate-800 */
+  border-top: 1px solid #334155 !important; /* slate-700 */
+  box-shadow: 0 -10px 10px -5px #1e293b !important; /* slate-800 */
+}
+
+.dark-sidebar-section {
+  padding-top: 12px;
+}
+
+.dark-sidebar-icon-container {
+  color: #94a3b8 !important; /* slate-400 */
+}
+
+.dark-sidebar-item-text {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+.dark-sidebar-nav-item:hover .dark-sidebar-item-text,
+.dark-sidebar-nav-item:hover .dark-sidebar-icon-container {
+  color: #ffffff !important;
+}
+
+.dark-sidebar-nav-item-selected .dark-sidebar-item-text,
+.dark-sidebar-nav-item-selected .dark-sidebar-icon-container,
+.sidebar-nav .dark-sidebar-nav-item-selected .dark-sidebar-item-text,
+.sidebar-nav .dark-sidebar-nav-item-selected .dark-sidebar-icon-container,
+.sidebar-container .dark-sidebar-nav-item-selected .dark-sidebar-item-text,
+.sidebar-container .dark-sidebar-nav-item-selected .dark-sidebar-icon-container {
+  color: #ffffff !important;
+}
+
+/* 确保在任何主题下都使用暗色侧边栏样式 */
+.sidebar-container.dark-sidebar,
+.sidebar-nav.dark-sidebar-nav,
+.dark-sidebar-nav-item,
+.dark-sidebar-divider,
+.dark-sidebar-group-label,
+.dark-sidebar-collapse-button,
+.dark-sidebar-section {
+  /* 使用 !important 确保样式不被主题覆盖 */
+}
+
 /* ==================== 聊天界面样式 ==================== */
 .semi-chat {
   padding-top: 0 !important;
