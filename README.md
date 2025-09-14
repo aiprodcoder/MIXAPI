@@ -105,7 +105,8 @@ go run main.go
 下载本项目Dockerfile文件，自行构建docker镜像,容器运行，可用于测试和正式运行
 ```shell
 wget https://github.com/aiprodcoder/MIXAPI/blob/main/Dockerfile
-docker build -t mixapi .    ( ARM平台 docker build --build-arg TARGETPLATFORM=linux/arm64 -t mixapi . ）
+docker build -t mixapi .    (默认AMD64平台)
+//ARM平台 docker build --build-arg TARGETPLATFORM=linux/arm64 -t mixapi .
 
 //测试运行命令
 docker run -it --rm  -p 3000:3000  -v $PWD/logs:/app/logs mixapi:latest    ($PWD为当前目录)
