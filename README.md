@@ -9,7 +9,7 @@
 
 🍥新一代大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
 
- 
+
 <p align="center">
   <a href="https://raw.githubusercontent.com/Calcium-Ion/new-api/main/LICENSE">
     <img src="https://img.shields.io/github/license/Calcium-Ion/new-api?color=brightgreen" alt="license">
@@ -17,7 +17,7 @@
  
 </p>
 </div>
-
+<div align="center"> <img src="/img/git0.png" width = "100" height = "592" alt="mixapi" /> </div>
 ## 📝 项目说明
 
 **全新AI大模型接口管理与API聚合分发系统**，支持将多种大模型转换成统一的OpenAI兼容接口,Claude接口,Gemini接口，可供个人或者企业内部大模型API
@@ -51,33 +51,33 @@ MIXAPI提供了丰富的功能：
 * 🔄 针对用户的模型限流功能
 * 💰 缓存计费支持，开启后可以在缓存命中时按照设定的比例计费：
 * 🔄 新增对token令牌的控制，可控制分钟请求次数限制和日请求次数限制
-  <div align="center"> <img src="/img/git1.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git1.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 * 📊 新增用量日统计
-  <div align="center"> <img src="/img/git2.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git2.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 
 * 📊 新增用量月统计
- <div align="center"> <img src="/img/git3.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git3.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 
 
 * 📋 新增令牌管理显示该令牌的今日次数和总次数
- <div align="center"> <img src="/img/git4.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git4.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 
 
 * 📝 新增通过令牌请求的内容记录显示
- <div align="center"> <img src="/img/git5.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git5.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 
 
 * 📝 支持通过令牌直接查询余额，无需登录 
- <div align="center"> <img src="/img/git6.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git6.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 * 📝 支持令牌中选择渠道组,设定该令牌只有渠道组下面的渠道可用,并结合选择渠道组,选择模型达到限制需求
 * 📝 API令牌中增加控制使用总次数限制,当达到总次数限制时返回额度已用完
- <div align="center"> <img src="/img/git7.png" width = "960" height = "460" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git7.png"  width = "100" height = "592" alt="mixapi" /> </div>
 
 ## 部署
 
