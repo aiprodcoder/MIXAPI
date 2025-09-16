@@ -128,7 +128,7 @@ docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD/logs:/app/lo
    OpenAI格式chat：   http://你的MixAPI服务器地址:3000/v1/chat/completions 
 Anthropic格式chat：   http://你的MixAPI服务器地址:3000/v1/messages
    Gemini格式chat：   http://你的MixAPI服务器地址:3000/v1beta
-     OpenAIqi嵌入：   http://你的MixAPI服务器地址:3000/v1/embeddings 
+       嵌入OpenAI：   http://你的MixAPI服务器地址:3000/v1/embeddings 
 ```
 
 
