@@ -7,7 +7,7 @@
 
 # MIXAPI
 
-🍥新一代大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
+🍥新一代AI大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
 
 
 <p align="center">
@@ -18,7 +18,7 @@
 </p>
 </div>
 <div align="center"> <img src="/img/git0.png" width = "1000" height = "592" alt="mixapi" /> </div>
-## 📝 项目说明
+
 
 **全新AI大模型接口管理与API聚合分发系统**，支持将多种大模型转换成统一的OpenAI兼容接口,Claude接口,Gemini接口，可供个人或者企业内部大模型API
 统一管理和渠道分发使用(key管理与二次分发)，支持国际国内所有主流大模型，gemini,claude,qwen3,kimi-k2,豆包等，提供单可执行文件，
