@@ -81,7 +81,7 @@ MIXAPI提供了丰富的功能：
 
 ## 部署
 
-详细部署指南请参考[安装指南-部署方式](https://docs.newapi.pro/installation)：
+详细部署指南请参考下面教程
 
 ### 部署要求
 - 本地数据库（默认）：SQLite（Docker部署默认使用SQLite）
@@ -124,15 +124,12 @@ docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD/logs:/app/lo
 2. `MEMORY_CACHE_ENABLED`：启用内存缓存（设置了Redis则无需手动设置）
 
 ## 接口文档
-
-详细接口文档请参考[接口文档](https://docs.newapi.pro/api)：
-
-- [聊天接口（Chat）](https://docs.newapi.pro/api/openai-chat)
-- [图像接口（Image）](https://docs.newapi.pro/api/openai-image)
-- [重排序接口（Rerank）](https://docs.newapi.pro/api/jinaai-rerank)
-- [实时对话接口（Realtime）](https://docs.newapi.pro/api/openai-realtime)
-- [Claude聊天接口（messages）](https://docs.newapi.pro/api/anthropic-chat)
-
+```
+   OpenAI格式chat：   http://你的MixAPI服务器地址:3000/v1/chat/completions 
+Anthropic格式chat：   http://你的MixAPI服务器地址:3000/v1/messages
+   Gemini格式chat：   http://你的MixAPI服务器地址:3000/v1beta
+     OpenAIqi嵌入：   http://你的MixAPI服务器地址:3000/v1/embeddings 
+```
 
 
 ## 帮助支持
