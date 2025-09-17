@@ -15,8 +15,8 @@ ARG TARGETPLATFORM=linux/amd64
 
 # 根据目标架构下载对应文件
 RUN case "${TARGETPLATFORM}" in \
-        "linux/amd64")  wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1/mixapi-v1.0.0-linux-amd64 ;; \
-        "linux/arm64")  wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1/mixapi-v1.0.0-linux-arm64 ;; \
+        "linux/amd64")  wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1.1/mixapi-v1.1-linux-amd64 ;; \
+        "linux/arm64")  wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1.1/mixapi-v1.1-linux-arm64 ;; \
         *) echo "Unsupported architecture: ${TARGETPLATFORM}" && exit 1 ;; \
     esac
 
