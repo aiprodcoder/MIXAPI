@@ -99,6 +99,8 @@ http://localhost:3000
 git clone https://github.com/aiprodcoder/MIXAPI
 cd MIXAPI
 go run main.go
+
+#浏览器访问 http://localhost:3000 即可打开界面
 ```
 
 #### 自行构建docker镜像，容器运行
@@ -113,6 +115,8 @@ docker run -it --rm  -p 3000:3000  -v $PWD/logs:/app/logs mixapi:latest    ($PWD
 
 # 正式运行命令
 docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD/logs:/app/logs  -e TZ=Asia/Shanghai mixapi:latest    ($PWD为当前工作目录)
+
+# 浏览器访问 http://localhost:3000 即可打开界面
 ```
 
 
