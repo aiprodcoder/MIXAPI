@@ -18,8 +18,8 @@ var TopUpLink = ""
 
 // var ChatLink = ""
 // var ChatLink2 = ""
-var QuotaPerUnit = 500 * 1000.0 // $0.002 / 1K tokens
-var DisplayInCurrencyEnabled = true
+var QuotaPerUnit = 500 * 1000.0      // $0.002 / 1K tokens
+var DisplayInCurrencyEnabled = false // true
 var DisplayTokenStatEnabled = true
 var DrawingEnabled = true
 var TaskEnabled = true
@@ -71,6 +71,7 @@ var DebugEnabled bool
 var MemoryCacheEnabled bool
 
 var LogConsumeEnabled = true
+var LogUserInputEnabled = true
 
 var SMTPServer = ""
 var SMTPPort = 587

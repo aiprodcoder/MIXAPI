@@ -22,6 +22,7 @@ import (
 	"one-api/types"
 	"strings"
 	"time"
+	"unicode"
 
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/shopspring/decimal"
@@ -30,28 +31,76 @@ import (
 )
 
 // 提取用户输入内容（从 messages 中提取用户发送的消息）
+// 修改为只提取最后一条用户消息，避免记录历史输入
 func extractUserInputFromMessages(messages []dto.Message) string {
 	if len(messages) == 0 {
 		return ""
 	}
 
-	var userInputs []string
-	for _, message := range messages {
+	// 从后往前查找，只提取最后一条用户消息
+	for i := len(messages) - 1; i >= 0; i-- {
+		message := messages[i]
 		if message.Role == "user" {
 			content := message.StringContent()
 			if content != "" {
-				userInputs = append(userInputs, content)
+				// 过滤代码类内容
+				if isCodeContent(content) {
+					continue
+				}
+				// 只保留汉字内容
+				filteredContent := filterChineseContent(content)
+				if filteredContent != "" {
+					return filteredContent
+				}
 			}
 		}
 	}
 
-	// 如果有多个用户消息，用换行分隔
-	if len(userInputs) > 0 {
-		return strings.Join(userInputs, "\n")
+	// 如果没有找到合适的用户消息，返回最后一条消息的内容（作为备选）
+	lastContent := messages[len(messages)-1].StringContent()
+	// 过滤代码类内容
+	if isCodeContent(lastContent) {
+		return ""
+	}
+	// 只保留汉字内容
+	return filterChineseContent(lastContent)
+}
+
+// 检查是否为代码类内容
+func isCodeContent(content string) bool {
+	// 定义代码类关键词
+	codeKeywords := []string{
+		"VSCode Open Tabs",
+		"Current Time",
+		"Current Cost",
+		"Current Mode",
+		"REMINDERS",
+		"VSCode Visible Files",
 	}
 
-	// 如果没有用户消息，返回第一个消息的内容（作为备选）
-	return messages[0].StringContent()
+	// 检查是否包含代码类关键词
+	for _, keyword := range codeKeywords {
+		if strings.Contains(content, keyword) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// 过滤并只保留汉字内容
+func filterChineseContent(content string) string {
+	// 使用正则表达式匹配汉字
+	var chineseContent strings.Builder
+	for _, r := range content {
+		// 检查字符是否为汉字
+		if unicode.Is(unicode.Scripts["Han"], r) {
+			chineseContent.WriteRune(r)
+		}
+	}
+
+	// 返回过滤后的汉字内容
+	return chineseContent.String()
 }
 
 func getAndValidateTextRequest(c *gin.Context, relayInfo *relaycommon.RelayInfo) (*dto.GeneralOpenAIRequest, error) {
@@ -584,9 +633,11 @@ func postConsumeQuota(ctx *gin.Context, relayInfo *relaycommon.RelayInfo,
 
 	// 提取用户输入内容
 	var userInput string
-	if textRequestInterface, exists := ctx.Get("text_request"); exists {
-		if textRequest, ok := textRequestInterface.(*dto.GeneralOpenAIRequest); ok && textRequest != nil {
-			userInput = extractUserInputFromMessages(textRequest.Messages)
+	if common.LogUserInputEnabled {
+		if textRequestInterface, exists := ctx.Get("text_request"); exists {
+			if textRequest, ok := textRequestInterface.(*dto.GeneralOpenAIRequest); ok && textRequest != nil {
+				userInput = extractUserInputFromMessages(textRequest.Messages)
+			}
 		}
 	}
 

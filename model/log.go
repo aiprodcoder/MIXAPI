@@ -431,3 +431,38 @@ func DeleteOldLog(ctx context.Context, targetTimestamp int64, limit int) (int64,
 
 	return total, nil
 }
+
+// DeleteLogsByTimeRange 根据时间范围删除日志
+func DeleteLogsByTimeRange(ctx context.Context, startTimestamp int64, endTimestamp int64, limit int) (int64, error) {
+	var total int64 = 0
+	var result *gorm.DB
+
+	for {
+		if nil != ctx.Err() {
+			return total, ctx.Err()
+		}
+
+		// 构建查询条件
+		query := LOG_DB
+		if startTimestamp > 0 {
+			query = query.Where("created_at >= ?", startTimestamp)
+		}
+		if endTimestamp > 0 {
+			query = query.Where("created_at <= ?", endTimestamp)
+		}
+
+		// 执行删除操作
+		result = query.Limit(limit).Delete(&Log{})
+		if nil != result.Error {
+			return total, result.Error
+		}
+
+		total += result.RowsAffected
+
+		if result.RowsAffected < int64(limit) {
+			break
+		}
+	}
+
+	return total, nil
+}

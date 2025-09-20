@@ -146,15 +146,30 @@ func GetLogsSelfStat(c *gin.Context) {
 }
 
 func DeleteHistoryLogs(c *gin.Context) {
-	targetTimestamp, _ := strconv.ParseInt(c.Query("target_timestamp"), 10, 64)
-	if targetTimestamp == 0 {
+	// 获取开始和结束时间戳参数
+	startTimestamp, _ := strconv.ParseInt(c.Query("start_timestamp"), 10, 64)
+	endTimestamp, _ := strconv.ParseInt(c.Query("end_timestamp"), 10, 64)
+	
+	// 兼容旧的target_timestamp参数
+	if startTimestamp == 0 && endTimestamp == 0 {
+		targetTimestamp, _ := strconv.ParseInt(c.Query("target_timestamp"), 10, 64)
+		if targetTimestamp != 0 {
+			// 如果只提供了target_timestamp，则将其作为结束时间，开始时间为0（删除该时间之前的所有日志）
+			endTimestamp = targetTimestamp
+		}
+	}
+	
+	// 验证参数
+	if startTimestamp == 0 && endTimestamp == 0 {
 		c.JSON(http.StatusOK, gin.H{
 			"success": false,
-			"message": "target timestamp is required",
+			"message": "start timestamp or end timestamp is required",
 		})
 		return
 	}
-	count, err := model.DeleteOldLog(c.Request.Context(), targetTimestamp, 100)
+	
+	// 调用模型层函数删除日志
+	count, err := model.DeleteLogsByTimeRange(c.Request.Context(), startTimestamp, endTimestamp, 100)
 	if err != nil {
 		common.ApiError(c, err)
 		return
