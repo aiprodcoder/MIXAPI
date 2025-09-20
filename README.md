@@ -7,7 +7,7 @@
 
 # MIXAPI
 
-🍥新一代AI大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
+🍥新一代AI大模型网关,聚合大模型API调用，转换所有大模型API接口为标准的 OpenAI-API格式，提供统一访问接口，开箱即用
 
 
 <p align="center">
