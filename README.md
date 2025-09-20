@@ -7,7 +7,7 @@
 
 # MIXAPI
 
-🍥新一代大模型网关,聚合大模型API调用，通过标准的 OpenAI API 格式访问所有的大模型，开箱即用
+🍥新一代AI大模型网关,聚合大模型API调用，转换所有大模型API接口为标准的 OpenAI-API格式，提供统一访问接口，开箱即用
 
 
 <p align="center">
@@ -18,7 +18,7 @@
 </p>
 </div>
 <div align="center"> <img src="/img/git0.png" width = "1000" height = "592" alt="mixapi" /> </div>
-## 📝 项目说明
+
 
 **全新AI大模型接口管理与API聚合分发系统**，支持将多种大模型转换成统一的OpenAI兼容接口,Claude接口,Gemini接口，可供个人或者企业内部大模型API
 统一管理和渠道分发使用(key管理与二次分发)，支持国际国内所有主流大模型，gemini,claude,qwen3,kimi-k2,豆包等，提供单可执行文件，
@@ -81,7 +81,7 @@ MIXAPI提供了丰富的功能：
 
 ## 部署
 
-详细部署指南请参考[安装指南-部署方式](https://docs.newapi.pro/installation)：
+详细部署指南请参考下面教程
 
 ### 部署要求
 - 本地数据库（默认）：SQLite（Docker部署默认使用SQLite）
@@ -99,20 +99,25 @@ http://localhost:3000
 git clone https://github.com/aiprodcoder/MIXAPI
 cd MIXAPI
 go run main.go
+
+#浏览器访问 http://localhost:3000 即可打开界面
 ```
 
 #### 自行构建docker镜像，容器运行
 下载本项目Dockerfile文件，自行构建docker镜像,容器运行，可用于测试和正式运行
 ```shell
-wget https://github.com/aiprodcoder/MIXAPI/blob/main/Dockerfile
-docker build -t mixapi .    (默认AMD64平台)
-# ARM平台 docker build --build-arg TARGETPLATFORM=linux/arm64 -t mixapi .
+wget -O Dockerfile https://raw.githubusercontent.com/aiprodcoder/MIXAPI/main/Dockerfile
+docker build -t mixapi .   
 
 # 测试运行命令
-docker run -it --rm  -p 3000:3000  -v $PWD/logs:/app/logs mixapi:latest    ($PWD为当前目录)
+mkdir mix-api   #创建工作目录
+cd mix-api      #进入工作目录
+docker run -it --rm  -p 3000:3000  -v $PWD:/data mixapi:latest    ($PWD为当前工作目录)
 
 # 正式运行命令
-docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD/logs:/app/logs  -e TZ=Asia/Shanghai mixapi:latest    ($PWD为当前工作目录)
+docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD:/data  -e TZ=Asia/Shanghai mixapi:latest    ($PWD为当前工作目录)
+
+# 浏览器访问 http://localhost:3000 即可打开界面
 ```
 
 
@@ -124,15 +129,12 @@ docker run --name mixapi -d --restart always  -p 3000:3000  -v $PWD/logs:/app/lo
 2. `MEMORY_CACHE_ENABLED`：启用内存缓存（设置了Redis则无需手动设置）
 
 ## 接口文档
-
-详细接口文档请参考[接口文档](https://docs.newapi.pro/api)：
-
-- [聊天接口（Chat）](https://docs.newapi.pro/api/openai-chat)
-- [图像接口（Image）](https://docs.newapi.pro/api/openai-image)
-- [重排序接口（Rerank）](https://docs.newapi.pro/api/jinaai-rerank)
-- [实时对话接口（Realtime）](https://docs.newapi.pro/api/openai-realtime)
-- [Claude聊天接口（messages）](https://docs.newapi.pro/api/anthropic-chat)
-
+```
+   OpenAI格式chat：   http://你的MixAPI服务器地址:3000/v1/chat/completions 
+Anthropic格式chat：   http://你的MixAPI服务器地址:3000/v1/messages
+   Gemini格式chat：   http://你的MixAPI服务器地址:3000/v1beta
+       嵌入OpenAI：   http://你的MixAPI服务器地址:3000/v1/embeddings 
+```
 
 
 ## 帮助支持
