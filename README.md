@@ -147,7 +147,7 @@ Anthropic格式chat：   http://你的MixAPI服务器地址:3000/v1/messages
 ```
 
 
-## 帮助支持
+## 帮助支持 （请点亮右上角的星星支持我们一下吧，顺手的事，但对我们非常重要！）
 
  ### 社区交流 ，问题反馈 ，软件定制，软件修改，商务咨询  请扫描加入微信群，我们一起把MixAPI做到最好
  <div align="center"> <img src="/img/wx.jpg" width = "300" height = "344" alt="mixapi" /> </div>  
