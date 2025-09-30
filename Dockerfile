@@ -11,10 +11,10 @@ WORKDIR /app
 RUN arch="$(apk --print-arch)"; \
     case "$arch" in \
         'x86_64') \
-            wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1.1/mixapi-v1.1-linux-amd64; \
+            wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1.2/mixapi-v1.2-linux-amd64; \
             ;; \
         'aarch64') \
-            wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1.1/mixapi-v1.1-linux-arm64; \
+            wget -O mixapi https://github.com/aiprodcoder/MIXAPI/releases/download/v1.2/mixapi-v1.2-linux-arm64; \
             ;; \
     esac
 
@@ -29,3 +29,4 @@ WORKDIR /data
 
 # 启动命令
 CMD ["/app/mixapi"]
+
