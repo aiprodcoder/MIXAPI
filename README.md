@@ -76,7 +76,7 @@ MIXAPI提供了丰富的功能：
 <div align="center"> <img src="/img/git6.png"  width = "1000" height = "800" alt="mixapi" /> </div> <br>
 
 * 📝 支持套餐管理模式，用户令牌绑定套餐，可以限制次数，周期，使用频率，指定渠道，指定模型
-<div align="center"> <img src="/img/tc-list.png"  width = "1000" height = "700" alt="mixapi" /> </div>  <br>
+<div align="center"> <img src="/img/tc-list.png"  width = "1000" height = "900" alt="mixapi" /> </div>  <br>
 
 * 📝 新增套餐管理界面
 <div align="center"> <img src="/img/tc-info.png"  width = "1000" height = "600" alt="mixapi" /> </div>  <br>
