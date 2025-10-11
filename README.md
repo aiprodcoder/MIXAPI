@@ -51,14 +51,14 @@ MIXAPI提供了丰富的功能：
 * 🔄 针对用户的模型限流功能
 * 💰 缓存计费支持，开启后可以在缓存命中时按照设定的比例计费：
 * 🔄 新增对token令牌的控制，可控制分钟请求次数限制和日请求次数限制
-<div align="center"> <img src="/img/git1.png"  width = "1000" height = "592" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git1.png"  width = "1000" height = "592" alt="mixapi" /> </div> <br>
 
 * 📊 新增用量日统计
-<div align="center"> <img src="/img/git2.png"  width = "1000" height = "592" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git2.png"  width = "1000" height = "592" alt="mixapi" /> </div>  <br>
 
 
 * 📊 新增用量月统计
-<div align="center"> <img src="/img/git3.png"  width = "1000" height = "592" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git3.png"  width = "1000" height = "592" alt="mixapi" /> </div> <br>
 
 
 
@@ -76,9 +76,13 @@ MIXAPI提供了丰富的功能：
 <div align="center"> <img src="/img/git6.png"  width = "1000" height = "800" alt="mixapi" /> </div> <br>
 
 * 📝 支持套餐管理模式，用户令牌绑定套餐，可以限制次数，周期，使用频率，指定渠道，指定模型
-<div align="center"> <img src="/img/tc-list.png"  width = "1000" height = "800" alt="mixapi" /> </div>
-<div align="center"> <img src="/img/tc-info.png"  width = "500" height = "600" alt="mixapi" /> </div>
-<div align="center"> <img src="/img/tc-token.png" width = "500" height = "600" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/tc-list.png"  width = "1000" height = "800" alt="mixapi" /> </div>  <br>
+
+* 📝 新增套餐管理界面
+<div align="center"> <img src="/img/tc-info.png"  width = "500" height = "600" alt="mixapi" /> </div>  <br>
+
+* 📝 新增访问令牌界面，直接选择套餐即可，无需更多操作
+<div align="center"> <img src="/img/tc-token.png" width = "500" height = "600" alt="mixapi" /> </div> <br>
 
 * 📝 支持令牌中选择渠道组,设定该令牌只有渠道组下面的渠道可用,并结合选择渠道组,选择模型达到限制需求
 * 📝 API令牌中增加控制使用总次数限制,当达到总次数限制时返回额度已用完
