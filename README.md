@@ -73,7 +73,12 @@ MIXAPI提供了丰富的功能：
 
 
 * 📝 支持通过令牌直接查询余额，自行完成充值，无需登录 
-<div align="center"> <img src="/img/git6.png"  width = "1000" height = "592" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/git6.png"  width = "1000" height = "800" alt="mixapi" /> </div>
+
+* 📝 支持套餐管理模式，用户令牌绑定套餐，可以限制次数，周期，使用频率，指定渠道，指定模型
+<div align="center"> <img src="/img/tc-list.png"  width = "1000" height = "800" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/tc-info.png"  width = "1000" height = "1200" alt="mixapi" /> </div>
+<div align="center"> <img src="/img/tc-token.png" width = "1000" height = "1200" alt="mixapi" /> </div>
 
 * 📝 支持令牌中选择渠道组,设定该令牌只有渠道组下面的渠道可用,并结合选择渠道组,选择模型达到限制需求
 * 📝 API令牌中增加控制使用总次数限制,当达到总次数限制时返回额度已用完
